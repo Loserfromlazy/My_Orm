@@ -26,7 +26,7 @@ public class XMLMapperBuilder {
         list.stream().forEach(element -> {
             String id = element.attributeValue("id");
             String resultType = element.attributeValue("resultType");
-            String paramerType = element.attributeValue("paramerType");
+            String paramerType = element.attributeValue("paramType");
             String sqlText = element.getTextTrim();
             MappedStatement mappedStatement = new MappedStatement();
             mappedStatement.setId(id);
