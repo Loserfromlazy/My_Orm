@@ -10,6 +10,8 @@ import org.dom4j.io.SAXReader;
 
 import java.beans.PropertyVetoException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 

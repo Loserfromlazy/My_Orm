@@ -29,7 +29,7 @@ public class SimpleExecutor implements Executor{
         //获取预处理对象
         PreparedStatement preparedStatement = connection.prepareStatement(boundSql.getSqlText());
         //设置参数
-        String paramterType = mappedStatement.getParamterType();//获取到了参数实体的全路径
+        String paramterType = mappedStatement.getParameterType();//获取到了参数实体的全路径
         Class<?> parameterTypeClass =  getClassType(paramterType);//根据全路径获取Class对象
         List<ParameterMapping> parameterMappingList = boundSql.getParameterMappingList();
         for (int i = 0; i < parameterMappingList.size(); i++) {
