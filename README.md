@@ -1,22 +1,22 @@
 # 自定义持久层框架
 使用方法如下：
 
-SqlMapConfig.xml
+resources下编写SqlMapConfig.xml配置文件
 ~~~ xml
 <configuration>
-
+<!--    配置数据源-->
     <dataSource>
         <property name="driverClass" value="com.mysql.cj.jdbc.Driver"></property>
         <property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&amp;characterEncoding=UTF8&amp;useSSL=false&amp;serverTimezone=Asia/Shanghai"></property>
         <property name="username" value="root"></property>
         <property name="password" value="root"></property>
     </dataSource>
-<!--    存放，apper.xml的全路径-->
+<!--    存放mapper.xml的全路径-->
     <mapper resource="UserMapper.xml"></mapper>
 
 </configuration>
 ~~~
-UserMapper.xml
+resources下编写UserMapper.xml配置文件
 ~~~xml
 <mapper namespace="user">
 <!--    sql的唯一标识：namespace和id组成  ：statementId -->
