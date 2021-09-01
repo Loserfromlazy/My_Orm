@@ -34,10 +34,14 @@ resources下编写UserMapper.xml配置文件
 ~~~
 测试方法的编写
 ~~~java
+/**
+ * 测试类 测试orm框架
+ */
 public class Test1 {
 
     @Test
     public void test() throws PropertyVetoException, DocumentException, SQLException, IntrospectionException, NoSuchFieldException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+        //测试第一版orm
         InputStream resourceAsStream = Resources.getResourceAsStream("sqlMapConfig.xml");
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(resourceAsStream);
         SqlSession sqlSession = sqlSessionFactory.openSqlSession();
@@ -49,8 +53,21 @@ public class Test1 {
 //        User userSelect = sqlSession.selectOne("user.selectOne",user);
 //        System.out.println(userSelect.toString());
 //        测试所有
-        List<Object> selectList = sqlSession.selectList("user.selectList");
-        selectList.stream().forEach(System.out::println);
+//        List<Object> selectList = sqlSession.selectList("user.selectList");
+//        selectList.stream().forEach(System.out::println);
+//        测试代理
+        //测试第二版
+        UserDao userDao = sqlSession.getMapper(UserDao.class);
+        List<User> all = userDao.findAll();
+        if (all == null){
+            System.out.println("all为null");
+        }else {
+            System.out.println(all.size());
+        }
+        all.stream().forEach(System.out::println);
+        User byCondition = userDao.findByCondition(user);
+        System.out.println(byCondition);
     }
 }
+
 ~~~
