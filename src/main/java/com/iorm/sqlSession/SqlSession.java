@@ -24,4 +24,12 @@ public interface SqlSession {
      * @throws SQLException
      */
     <T> T selectOne(String statementId,Object... params) throws SQLException, ClassNotFoundException, NoSuchFieldException, IllegalAccessException, IntrospectionException, InstantiationException, InvocationTargetException;
+
+    /**
+     * 为dao生成代理实现类
+     * @param mapperClass
+     * @param <T>
+     * @return
+     */
+    <T> T getMapper(Class<?> mapperClass);
 }
