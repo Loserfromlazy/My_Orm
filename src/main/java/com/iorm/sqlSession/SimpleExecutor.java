@@ -16,7 +16,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleExecutor implements Executor{
+public class SimpleExecutor implements Executor {
 
     @Override
     public <E> List<E> query(Configuration configuration, MappedStatement mappedStatement, Object... params) throws SQLException, ClassNotFoundException, NoSuchFieldException, IllegalAccessException, IntrospectionException, InstantiationException, InvocationTargetException {
@@ -25,12 +25,12 @@ public class SimpleExecutor implements Executor{
         //2. 获取sql语句
         String sql = mappedStatement.getSql();
         //转换sql语句 转换占位符，同时对#{}中的值进行解析存储
-        BoundSql boundSql= getBoundSql(sql);
+        BoundSql boundSql = getBoundSql(sql);
         //获取预处理对象
         PreparedStatement preparedStatement = connection.prepareStatement(boundSql.getSqlText());
         //设置参数
         String paramterType = mappedStatement.getParameterType();//获取到了参数实体的全路径
-        Class<?> parameterTypeClass =  getClassType(paramterType);//根据全路径获取Class对象
+        Class<?> parameterTypeClass = getClassType(paramterType);//根据全路径获取Class对象
         List<ParameterMapping> parameterMappingList = boundSql.getParameterMappingList();
         for (int i = 0; i < parameterMappingList.size(); i++) {
             ParameterMapping parameterMapping = parameterMappingList.get(i);//取出集合中的每一个对象
@@ -40,18 +40,18 @@ public class SimpleExecutor implements Executor{
             //暴力访问
             declaredField.setAccessible(true);
             Object o = declaredField.get(params[0]);//通过属性对象获取实体对象的值
-            preparedStatement.setObject(i+1,o);
+            preparedStatement.setObject(i + 1, o);
         }
         //执行sql
         ResultSet resultSet = preparedStatement.executeQuery();
         String resultType = mappedStatement.getResultType();
         Class<?> resultTypeClass = getClassType(resultType);
-        Object o = resultTypeClass.newInstance();
         ArrayList<Object> objects = new ArrayList<>();
         //封装返回结果集
-        while (resultSet.next()){
+        while (resultSet.next()) {
+            Object o = resultTypeClass.newInstance();
             ResultSetMetaData metaData = resultSet.getMetaData();//元数据：元数据中包含了结果中的字段名
-            for (int i = 1; i <metaData.getColumnCount() ; i++) {//metaData.getColumnCount()
+            for (int i = 1; i < metaData.getColumnCount(); i++) {//metaData.getColumnCount()
                 //字段名
                 String columnName = metaData.getColumnName(i);
                 //字段值
@@ -60,7 +60,7 @@ public class SimpleExecutor implements Executor{
                 //PropertyDescriptor是内省库中的类 利用此类的有参创建对象 此类会根据resultTypeClass的columnName属性生成读写方法
                 PropertyDescriptor propertyDescriptor = new PropertyDescriptor(columnName, resultTypeClass);
                 Method writeMethod = propertyDescriptor.getWriteMethod();
-                writeMethod.invoke(o,value);//把value值封装到了对象中
+                writeMethod.invoke(o, value);//把value值封装到了对象中
             }
             objects.add(o);
         }
@@ -70,7 +70,7 @@ public class SimpleExecutor implements Executor{
     }
 
     private Class<?> getClassType(String paramterType) throws ClassNotFoundException {
-        if (paramterType != null){
+        if (paramterType != null) {
             Class<?> aClass = Class.forName(paramterType);
             return aClass;
         }
@@ -79,6 +79,7 @@ public class SimpleExecutor implements Executor{
 
     /**
      * 完成对#{}的解析 将#{}替代为? 同时 解析出#{}中的值进行存储
+     *
      * @param sql
      * @return
      */
@@ -90,6 +91,6 @@ public class SimpleExecutor implements Executor{
         String parseSql = genericTokenParser.parse(sql);
         //#{}解析出来的参数名称
         List<ParameterMapping> parameterMappings = tokenHandler.getParameterMappings();
-        return new BoundSql(parseSql,parameterMappings);
+        return new BoundSql(parseSql, parameterMappings);
     }
 }
