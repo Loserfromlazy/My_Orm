@@ -1,4 +1,5 @@
 # 自定义持久层框架
+Mybatis学习项目：[项目笔记](https://www.cnblogs.com/yhr520/p/12550205.html)
 使用方法如下：
 
 resources下编写SqlMapConfig.xml配置文件
