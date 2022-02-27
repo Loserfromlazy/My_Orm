@@ -1,5 +1,6 @@
 # 自定义持久层框架
-Mybatis学习项目：[项目笔记](https://www.cnblogs.com/yhr520/p/12550205.html)
+
+此项目是Mybatis的学习项目只是用来了解加深对Mybatis的了解的：[学习笔记](https://www.cnblogs.com/yhr520/p/12550205.html)
 
 使用方法如下：
 
